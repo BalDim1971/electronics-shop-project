@@ -3,9 +3,16 @@
 import pytest
 from src.item import Item
 
-
 item1 = Item("Смартфон", 10000, 20)
 item2 = Item("Ноутбук", 20000, 5)
+
+
+def test_repr():
+	assert repr(item1) == "Item('Смартфон', 10000, 20)"
+
+
+def test_str():
+	assert str(item1) == 'Смартфон'
 
 
 def test_calculate_total_price():
@@ -25,7 +32,7 @@ def test_apply_discount():
 	item1.apply_discount()
 	assert item1.price == 8000.0
 	assert item2.price == 20000
-	
+
 
 def test_name():
 	'''
@@ -55,3 +62,4 @@ def test_string_to_number():
 def test_instantiate_from_csv():
 	Item.instantiate_from_csv('src/items.csv')
 	assert len(Item.all) == 5
+
