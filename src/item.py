@@ -57,10 +57,14 @@ class Item:
         '''
         Функция инициации класса данными из файла
         Реализовано в рамках конкретного задания: сделан переход для чтения файла от уровня выше
+        Добавлена проверка на наличие перехода
         '''
         
         cls.all.clear()
-        with open('../'+name_file, newline='') as csvfile:
+        if name_file[0:2] != '..':
+            name_file = '../' + name_file
+        
+        with open(name_file, newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 item = cls(row['name'], float(row['price']), int(row['quantity']))
