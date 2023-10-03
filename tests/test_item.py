@@ -1,30 +1,41 @@
 """Здесь надо написать тесты с использованием pytest для модуля item."""
 
+import os
 import pytest
 from src.item import Item
 
-item1 = Item("Смартфон", 10000, 20)
+
+@pytest.fixture
+def item1():
+	return Item("Смартфон", 10000, 20)
+
+
 item2 = Item("Ноутбук", 20000, 5)
 
 
-def test_repr():
+def test_repr(item1):
 	assert repr(item1) == "Item('Смартфон', 10000, 20)"
 
 
-def test_str():
+def test_str(item1):
 	assert str(item1) == 'Смартфон'
+
+
+def test_calculate_total_price(item1):
+	'''
+	Когда создан класс Смартфон, то должно вернуть 200000
+	'''
+	assert item1.calculate_total_price() == 200000
 
 
 def test_calculate_total_price():
 	'''
-	Когда создан класс Смартфон, то должно вернуть 200000
-	Для Ноутбук - 100000
+	Когда создан класс Ноутбук должно вернуть 100000
 	'''
-	assert item1.calculate_total_price() == 200000
 	assert item2.calculate_total_price() == 100000
 
 
-def test_apply_discount():
+def test_apply_discount(item1):
 	'''
 	Тестируем применение дискаунта
 	'''
@@ -34,7 +45,7 @@ def test_apply_discount():
 	assert item2.price == 20000
 
 
-def test_name():
+def test_name(item1):
 	'''
 	Тестирование возвращение значения приватной переменной
 	'''
@@ -42,7 +53,7 @@ def test_name():
 	assert item2.name == "Ноутбук"
 
 
-def test_name_set():
+def test_name_set(item1):
 	'''
 	Тестируем функцию задания имени
 	'''
@@ -60,6 +71,5 @@ def test_string_to_number():
 
 
 def test_instantiate_from_csv():
-	Item.instantiate_from_csv('src/items.csv')
+	Item.instantiate_from_csv(os.path.join('src', 'items.csv'))
 	assert len(Item.all) == 5
-

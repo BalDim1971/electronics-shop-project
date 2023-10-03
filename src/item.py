@@ -1,4 +1,5 @@
 import csv
+import os
 
 class Item:
     """
@@ -71,9 +72,13 @@ class Item:
         '''
         
         cls.all.clear()
-        if name_file[0:2] != '..':
-            name_file = '../' + name_file
         
+        # В рамках задания и для тестирования, если нет файла по указанному пути,
+        # пробуем найти его от каталога выше
+        if not os.path.exists(name_file):
+            name_file = os.path.join('..', name_file)
+        
+        # Читаем данные из файла csv
         with open(name_file, newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
