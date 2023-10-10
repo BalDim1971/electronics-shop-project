@@ -15,7 +15,7 @@ class Phone(Item):
         :param count_sim: Количество Поддерживаемых сим-карт.
 		'''
 		super().__init__(name, price, quantity)
-		self.__number_of_sim = number_of_sim
+		self.number_of_sim = number_of_sim
 	
 	def __repr__(self) -> str:
 		'''
@@ -42,6 +42,8 @@ class Phone(Item):
         Должно быть больше 0
         Если 0, выкинуть ошибку
         '''
-		if number_of_sim > 0:
+		if number_of_sim > 0 and type(number_of_sim) == int:
 			self.__number_of_sim = number_of_sim
+		else:
+			raise ValueError("Количество физических SIM-карт должно быть целым числом больше нуля")
 

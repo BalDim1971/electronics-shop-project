@@ -3,6 +3,7 @@
 import os
 import pytest
 from src.item import Item
+from src.phone import Phone
 
 
 @pytest.fixture
@@ -73,3 +74,14 @@ def test_string_to_number():
 def test_instantiate_from_csv():
 	Item.instantiate_from_csv(os.path.join('src', 'items.csv'))
 	assert len(Item.all) == 5
+	with pytest.raises(ValueError):
+		Item.instantiate_from_csv(os.path.join('items.csv'))
+
+
+def test_add():
+	phone1 = Phone("iPhone 14", 120_000, 5, 2)
+	item2 = Item("Смартфон", 10000, 20)
+	assert item2 + phone1 == 25
+	assert phone1 + phone1 == 10
+	with pytest.raises(TypeError):
+		item2 + 5

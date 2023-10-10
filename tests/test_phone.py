@@ -35,5 +35,8 @@ def test_number_of_sim_set(phone1):
 	'''
 	Тестируем функцию задания количества симкарт
 	'''
-	phone1.name = 'Калькулятор'
-	assert item1.name == 'Калькулято'
+	with pytest.raises(ValueError):
+		phone2 = Phone("iPhone 14", 120_000, 5, -1)
+	for i in (-1, 0, 0.5, 1.5, 2.99):
+		with pytest.raises(ValueError):
+			phone1.number_of_sim = i
