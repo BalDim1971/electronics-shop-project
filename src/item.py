@@ -2,6 +2,13 @@ import csv
 import os
 
 
+class InstantiateCSVError(Exception):
+	'''
+	Исключение с сообщением “_Файл item.csv поврежден_”.
+	'''
+	pass
+
+
 class Item:
 	"""
     Класс для представления товара в магазине.
@@ -65,9 +72,10 @@ class Item:
 		self.__name = name
 	
 	@classmethod
-	def instantiate_from_csv(cls, name_file):
+	def instantiate_from_csv(cls, name_file=os.path.join('src', 'items.csv')):
 		'''
-        Функция инициации класса данными из файла
+        Функция инициации класса данными из файла.
+        
         Реализовано в рамках конкретного задания: сделан переход для чтения файла от уровня выше
         Добавлена проверка на наличие перехода
         '''
@@ -79,7 +87,7 @@ class Item:
 		if not os.path.exists(name_file):
 			name_file = os.path.join('..', name_file)
 			if not os.path.exists(name_file):
-				raise ValueError("Нет файла")
+				raise FileNotFoundError("Отсутствует файл item.csv")
 		
 		# Читаем данные из файла csv
 		with open(name_file, newline='') as csvfile:
@@ -90,7 +98,8 @@ class Item:
 	@staticmethod
 	def string_to_number(num: str):
 		'''
-        Превращаем строку-число в целое число
+        Превращаем строку-число в целое число.
+        
         Если число с точкой, отрезаем лишнее после точки
         '''
 		
@@ -107,4 +116,3 @@ class Item:
 			return self.quantity + other.quantity
 		
 		raise TypeError("Складывать можно только объекты классов с родительским классом Item")
-	

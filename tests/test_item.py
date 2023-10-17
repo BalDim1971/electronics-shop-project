@@ -2,7 +2,7 @@
 
 import os
 import pytest
-from src.item import Item
+from src.item import Item, InstantiateCSVError
 from src.phone import Phone
 
 
@@ -74,7 +74,7 @@ def test_string_to_number():
 def test_instantiate_from_csv():
 	Item.instantiate_from_csv(os.path.join('src', 'items.csv'))
 	assert len(Item.all) == 5
-	with pytest.raises(ValueError):
+	with pytest.raises(FileNotFoundError):
 		Item.instantiate_from_csv(os.path.join('items.csv'))
 
 
