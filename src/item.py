@@ -6,8 +6,13 @@ class InstantiateCSVError(Exception):
 	'''
 	Исключение с сообщением “_Файл item.csv поврежден_”.
 	'''
-	pass
-
+	
+	def __init__(self, *args, **kwargs):
+		self.message = 'Файл items.csv поврежден'
+	
+	def __str__(self):
+		return self.message
+ 
 
 class Item:
 	"""
@@ -86,14 +91,19 @@ class Item:
 		# пробуем найти его от каталога выше
 		if not os.path.exists(name_file):
 			name_file = os.path.join('..', name_file)
-			if not os.path.exists(name_file):
-				raise FileNotFoundError("Отсутствует файл item.csv")
-		
-		# Читаем данные из файла csv
-		with open(name_file, newline='') as csvfile:
-			reader = csv.DictReader(csvfile)
-			for row in reader:
-				item = cls(row['name'], float(row['price']), int(row['quantity']))
+
+		try:
+			# Читаем данные из файла csv
+			with open(name_file, newline='') as csvfile:
+				reader = csv.DictReader(csvfile)
+				try:
+					for row in reader:
+						item = cls(row['name'], float(row['price']), int(row['quantity']))
+				except KeyError:
+					raise InstantiateCSVError
+			
+		except FileNotFoundError:
+			raise FileNotFoundError("Отсутствует файл item.csv")
 	
 	@staticmethod
 	def string_to_number(num: str):
